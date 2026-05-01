@@ -18,6 +18,20 @@ extension UIView {
         }
     }
     
+    @IBInspectable var topCornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = adjustedForDevice(newValue)
+            layer.maskedCorners = [
+                .layerMinXMinYCorner, // top-left
+                .layerMaxXMinYCorner  // top-right
+            ]
+            clipsToBounds = true
+        }
+    }
+    
     @IBInspectable var borderColor: UIColor? {
         get {
             if let color = layer.borderColor {
