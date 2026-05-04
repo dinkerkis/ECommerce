@@ -25,6 +25,18 @@ class HomeViewController: UIViewController {
         bindViewModel()
         startAutoScroll()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar for this view controller
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar when moving to other view controllers
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
 
     // MARK: - Bind ViewModel Callbacks
     private func bindViewModel() {
@@ -44,7 +56,7 @@ class HomeViewController: UIViewController {
     func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { sectionIndex, environment in
             if sectionIndex == 0 {
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(236))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
@@ -76,13 +88,14 @@ class HomeViewController: UIViewController {
                 return section
             }
             else {
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(180))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(236))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(180)), subitems: [item])
-                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(236))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+
                 let section = NSCollectionLayoutSection(group: group)
-                
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 8, trailing: 8)
+
                 return section
             }
         }
@@ -161,6 +174,20 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             cell.titleLabel.text = category.name
             
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            
+        }
+        else {
+            let category = categories[indexPath.row]
+            
+            if let vc = ViewControllerHelper.getViewController(ofType: .SubCategoriesViewController) as? SubCategoriesViewController {
+                vc.category = category
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     

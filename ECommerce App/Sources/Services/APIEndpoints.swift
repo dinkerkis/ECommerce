@@ -8,5 +8,6 @@ struct API {
     
     struct Categories {
         static let categories = "\(baseURL)/api/categories"
+        static let subcategories = "\(baseURL)/api/sub-categories"
     }
 }

@@ -62,12 +62,18 @@ class APIService {
     }
     
     // GET request
-    func getRequest<Response: Codable>(url: String, responseType: Response.Type, completion: @escaping (Result<Response, Error>) -> Void) {
-        guard let endpoint = URL(string: url) else {
+    func getRequest<Response: Codable, Params: Encodable>(url: String, query: Params? = nil, responseType: Response.Type, completion: @escaping (Result<Response, Error>) -> Void) {
+        guard var components = URLComponents(string: url) else {
+            return completion(.failure(APIError.invalidURL))
+        }
+        
+        components.queryItems = query?.queryItems
+        
+        guard let finalURL = components.url else {
             return completion(.failure(APIError.invalidURL))
         }
 
-        var request = URLRequest(url: endpoint)
+        var request = URLRequest(url: finalURL)
         request.httpMethod = "GET"
 
         // Authenticated request

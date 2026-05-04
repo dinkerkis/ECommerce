@@ -1,6 +1,7 @@
 struct ViewControllerIdentifiers {
     
     static let LoginViewController = "LoginViewController"
+    static let SubCategoriesViewController = "SubCategoriesViewController"
     static let TabBarController = "TabBarController"
 }
 
@@ -8,6 +9,7 @@ import UIKit
 
 enum ViewControllerType {
     case LoginViewController
+    case SubCategoriesViewController
     case TabBarController
 }
 
@@ -21,6 +23,9 @@ class ViewControllerHelper: NSObject {
         
         if viewControllerType == .LoginViewController {
             viewController = storyboard.instantiateViewController(withIdentifier: ViewControllerIdentifiers.LoginViewController) as! LoginViewController
+        }
+        else if viewControllerType == .SubCategoriesViewController {
+            viewController = storyboard.instantiateViewController(withIdentifier: ViewControllerIdentifiers.SubCategoriesViewController) as! SubCategoriesViewController
         }
         else if viewControllerType == .TabBarController {
             viewController = storyboard.instantiateViewController(withIdentifier: ViewControllerIdentifiers.TabBarController) as! TabBarController

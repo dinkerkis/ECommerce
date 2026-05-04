@@ -1,16 +1,16 @@
 import Foundation
 
-class HomeViewModel {
+class SubcategoryViewModel {
     
     // MARK: - Callback Closures
-    var onSuccess: ((CategoriesResponse) -> Void)?
+    var onSuccess: ((SubcategoriesResponse) -> Void)?
     var onError: ((String) -> Void)?
     
     // MARK: - Fetch Categories API Call
-    func fetchCategories() {
-        let request = CategoriesRequest(page: 1, limit: 20)
+    func fetchSubcategories(_ categoryId: String) {
+        let request = SubcategoriesRequest(category: categoryId, page: 1, limit: 20)
         
-        APIService.shared.getRequest(url: API.Categories.categories, query: request, responseType: CategoriesResponse.self) { result in
+        APIService.shared.getRequest(url: API.Categories.subcategories, query: request, responseType: SubcategoriesResponse.self) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
